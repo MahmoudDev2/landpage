@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cvOutput.innerHTML = '';
         pdfBtn.disabled = true;
 
-        const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro-latest:generateContent?key=${userApiKey}`;
+        const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${userApiKey}`;
 
         const prompt = getPrompt(text, currentLang);
         const requestBody = {
