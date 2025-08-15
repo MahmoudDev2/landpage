@@ -11,7 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
             loading_text: "جاري التحليل والتحسين...",
             footer_text: "تم التطوير بواسطة الذكاء الاصطناعي",
             cv_input_placeholder: "مثال: أنا مطور برامج لدي 5 سنوات من الخبرة في...",
-            error_empty_input: "الرجاء إدخال نص السيرة الذاتية أولاً."
+            error_empty_input: "الرجاء إدخال نص السيرة الذاتية أولاً.",
+            settings_button: "الإعدادات",
+            modal_header: "إدخال مفتاح Gemini API",
+            modal_subheader: "الرجاء إدخال مفتاح API الخاص بك للمتابعة. يتم حفظ المفتاح في متصفحك فقط.",
+            modal_save_button: "حفظ والتحقق",
+            modal_close_button: "إغلاق",
+            key_validating: "جاري التحقق...",
+            key_invalid: "المفتاح غير صالح. يرجى التحقق منه والمحاولة مرة أخرى.",
+            key_valid: "تم التحقق!"
         },
         en: {
             title: "AI CV Improver",
@@ -23,7 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
             loading_text: "Analyzing and improving...",
             footer_text: "Developed by AI",
             cv_input_placeholder: "e.g., I am a software developer with 5 years of experience in...",
-            error_empty_input: "Please enter your CV text first."
+            error_empty_input: "Please enter your CV text first.",
+            settings_button: "Settings",
+            modal_header: "Enter Gemini API Key",
+            modal_subheader: "Please enter your API key to continue. The key is saved only in your browser.",
+            modal_save_button: "Save & Validate",
+            modal_close_button: "Close",
+            key_validating: "Validating...",
+            key_invalid: "The key is invalid. Please check it and try again.",
+            key_valid: "Validated!"
         }
     };
 
@@ -36,8 +52,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const cvOutput = document.getElementById('cv-output');
     const loadingSpinner = document.getElementById('loading-spinner');
     const errorMessage = document.getElementById('error-message');
+    // New Modal Elements
+    const settingsBtn = document.getElementById('settings-btn');
+    const apiKeyModal = document.getElementById('api-key-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const saveKeyBtn = document.getElementById('save-key-btn');
+    const apiKeyInput = document.getElementById('api-key-input');
+    const modalError = document.getElementById('modal-error');
 
     let currentLang = 'ar'; // Default language
+    let userApiKey = null; // To store the user's API key
 
     // --- FUNCTIONS ---
 
@@ -78,8 +102,81 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMessage.classList.add('hidden');
     }
 
-    const API_KEY = 'AIzaSyAoU605YhPn_oVqpPOqojL59XLKQdsjGdg';
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${API_KEY}`;
+    // The hardcoded API_KEY and API_URL constants are removed.
+    // They will be constructed dynamically using the key from localStorage.
+
+    // --- Modal and API Key Logic ---
+
+    function openModal() {
+        apiKeyModal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+        apiKeyModal.classList.add('hidden');
+        modalError.classList.add('hidden'); // Hide error on close
+    }
+
+    function checkApiKey() {
+        userApiKey = localStorage.getItem('gemini-api-key');
+        if (!userApiKey) {
+            openModal();
+            improveBtn.disabled = true;
+            // Add a visual cue for disabled state
+            improveBtn.style.cursor = 'not-allowed';
+            improveBtn.style.opacity = '0.6';
+        } else {
+            improveBtn.disabled = false;
+            improveBtn.style.cursor = 'pointer';
+            improveBtn.style.opacity = '1';
+            apiKeyInput.value = userApiKey; // Pre-fill for easy editing
+        }
+    }
+
+    async function validateAndSaveApiKey() {
+        const key = apiKeyInput.value.trim();
+        if (!key) return;
+
+        // Show loading state
+        saveKeyBtn.disabled = true;
+        saveKeyBtn.textContent = translations[currentLang].key_validating;
+        modalError.classList.add('hidden');
+
+        const validationUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${key}`;
+
+        try {
+            const response = await fetch(validationUrl);
+            if (!response.ok) {
+                const errorData = await response.json();
+                const errorMessage = errorData?.error?.message || translations[currentLang].key_invalid;
+                throw new Error(errorMessage);
+            }
+
+            // If we get here, the key is valid
+            localStorage.setItem('gemini-api-key', key);
+            userApiKey = key; // Update the global variable
+
+            // Show success briefly, then close
+            saveKeyBtn.style.backgroundColor = 'var(--accent-success)';
+            saveKeyBtn.textContent = translations[currentLang].key_valid;
+
+            setTimeout(() => {
+                closeModal();
+                checkApiKey(); // Re-check to enable the UI
+                saveKeyBtn.disabled = false; // Re-enable button
+                saveKeyBtn.style.backgroundColor = 'var(--accent-primary)';
+                saveKeyBtn.textContent = translations[currentLang].modal_save_button;
+            }, 1500);
+
+        } catch (error) {
+            localStorage.removeItem('gemini-api-key'); // Remove invalid key
+            userApiKey = null;
+            modalError.textContent = error.message;
+            modalError.classList.remove('hidden');
+            saveKeyBtn.disabled = false; // Re-enable button
+            saveKeyBtn.textContent = translations[currentLang].modal_save_button;
+            checkApiKey(); // Re-check to disable the UI
+        }
+    }
 
     // Function to generate the prompt for Gemini
     function getPrompt(text, lang) {
@@ -124,10 +221,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to call the Gemini API
     async function callGeminiApi(text) {
+        if (!userApiKey) {
+            const errorMsg = currentLang === 'ar' ? 'مفتاح API غير موجود. الرجاء إضافته من الإعدادات.' : 'API Key not found. Please set it in the settings.';
+            showError(errorMsg);
+            openModal();
+            return;
+        }
+
         showLoading(true);
         hideError();
         cvOutput.innerHTML = '';
         pdfBtn.disabled = true;
+
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${userApiKey}`;
 
         const prompt = getPrompt(text, currentLang);
         const requestBody = {
@@ -186,6 +292,17 @@ document.addEventListener('DOMContentLoaded', () => {
     langArBtn.addEventListener('click', () => setLanguage('ar'));
     langEnBtn.addEventListener('click', () => setLanguage('en'));
 
+    // Settings Modal
+    settingsBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    apiKeyModal.addEventListener('click', (e) => {
+        // Close modal if overlay is clicked, but not its children
+        if (e.target === apiKeyModal) {
+            closeModal();
+        }
+    });
+    saveKeyBtn.addEventListener('click', validateAndSaveApiKey);
+
     // Improve button click
     improveBtn.addEventListener('click', () => {
         const inputText = cvInput.value.trim();
@@ -226,4 +343,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INITIALIZATION ---
     setLanguage('ar'); // Set initial language on page load
+    checkApiKey(); // Check for a saved API key on load
 });
