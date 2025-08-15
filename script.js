@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const API_KEY = 'AIzaSyD6CZIT75cx77bV1hMhjAwE1kmcwQkuzE4';
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent?key=${API_KEY}`;
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${API_KEY}`;
 
     // Function to generate the prompt for Gemini
     function getPrompt(text, lang) {
@@ -162,7 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // It's good practice to check if the response structure is as expected
             if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
                 const improvedText = data.candidates[0].content.parts[0].text;
-                cvOutput.innerText = improvedText; // Use innerText for security
+                // Per user feedback, render the HTML content from the API
+                cvOutput.innerHTML = improvedText;
                 pdfBtn.disabled = false;
             } else {
                 throw new Error("Received an unexpected response format from the API.");
