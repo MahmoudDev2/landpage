@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         saveKeyBtn.textContent = translations[currentLang].key_validating;
         modalError.classList.add('hidden');
 
-        const validationUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${key}`;
+        const validationUrl = `https://generativelanguage.googleapis.com/v1/models?key=${key}`;
 
         try {
             const response = await fetch(validationUrl);
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cvOutput.innerHTML = '';
         pdfBtn.disabled = true;
 
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${userApiKey}`;
+        const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro-latest:generateContent?key=${userApiKey}`;
 
         const prompt = getPrompt(text, currentLang);
         const requestBody = {
