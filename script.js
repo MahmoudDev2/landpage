@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const API_KEY = 'AIzaSyD6CZIT75cx77bV1hMhjAwE1kmcwQkuzE4';
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
 
     // Function to generate the prompt for Gemini
     function getPrompt(text, lang) {

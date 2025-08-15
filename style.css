@@ -1,12 +1,29 @@
+/* --- Enhanced UI/UX Styles --- */
+
+/* Google Font import is in index.html */
+
+:root {
+    --bg-dark-1: #1a202c;
+    --bg-dark-2: #2d3748;
+    --text-light: #e2e8f0;
+    --text-bright: #ffffff;
+    --accent-primary: #4fd1c5;
+    --accent-primary-hover: #38b2ac;
+    --accent-success: #48bb78;
+    --accent-error: #f56565;
+    --border-color: #4a5568;
+}
+
 /* General Body Styles */
 body {
     font-family: 'IBM Plex Sans Arabic', sans-serif;
-    background-color: #f4f7f9;
-    color: #333;
-    line-height: 1.6;
+    background: linear-gradient(135deg, var(--bg-dark-1), var(--bg-dark-2));
+    color: var(--text-light);
+    line-height: 1.7;
     margin: 0;
-    padding: 20px;
+    padding: 2rem;
     direction: rtl; /* Default to RTL */
+    min-height: 100vh;
 }
 
 /* Header and Language Switcher */
@@ -14,92 +31,120 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 15px;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 header h1 {
-    font-size: 2em;
-    color: #005A9C;
+    font-size: 2.5em;
+    color: var(--text-bright);
     margin: 0;
+    font-weight: 700;
 }
 
 .lang-switcher button {
-    background: none;
-    border: 1px solid #ccc;
-    padding: 8px 16px;
-    margin: 0 5px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+    padding: 0.6rem 1.2rem;
+    margin: 0 0.5rem;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 8px;
     font-family: 'IBM Plex Sans Arabic', sans-serif;
     font-size: 1em;
-    transition: background-color 0.3s, color 0.3s;
+    transition: all 0.3s ease;
+}
+
+.lang-switcher button:hover {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: var(--bg-dark-1);
 }
 
 .lang-switcher button.active {
-    background-color: #005A9C;
-    color: #fff;
-    border-color: #005A9C;
+    background-color: var(--accent-primary);
+    color: var(--bg-dark-1);
+    border-color: var(--accent-primary);
+    font-weight: bold;
 }
 
 /* Main Layout */
 .container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2.5rem;
 }
 
 /* Editor and Result Containers */
 .editor-container, .result-container {
-    background-color: #fff;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    background-color: var(--bg-dark-2);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.editor-container:hover, .result-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.3);
 }
 
 h2 {
-    font-size: 1.5em;
-    color: #333;
+    font-size: 1.75em;
+    color: var(--text-bright);
     margin-top: 0;
+    margin-bottom: 0.5rem;
 }
 
 p {
-    color: #666;
-    margin-bottom: 20px;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
 }
 
 /* Textarea and Buttons */
 textarea#cv-input {
     width: 100%;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     font-family: 'IBM Plex Sans Arabic', sans-serif;
     font-size: 1em;
-    box-sizing: border-box; /* Important for width */
-    margin-bottom: 15px;
+    box-sizing: border-box;
+    margin-bottom: 1.5rem;
+    background-color: var(--bg-dark-1);
+    color: var(--text-light);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+textarea#cv-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.3);
 }
 
 button {
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 8px;
     font-family: 'IBM Plex Sans Arabic', sans-serif;
-    font-size: 1em;
-    padding: 12px 20px;
-    transition: background-color 0.3s;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+    transition: all 0.3s ease;
+    border: none;
 }
 
 button#improve-btn {
-    background-color: #28a745;
-    color: white;
-    border: none;
+    background-color: var(--accent-primary);
+    color: var(--bg-dark-1);
     width: 100%;
-    font-weight: bold;
 }
 
 button#improve-btn:hover {
-    background-color: #218838;
+    background-color: var(--accent-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(79, 209, 197, 0.2);
 }
 
 /* Result Section */
@@ -107,51 +152,58 @@ button#improve-btn:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
 }
 
 button#pdf-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
+    background-color: transparent;
+    color: var(--accent-primary);
+    border: 2px solid var(--accent-primary);
 }
 
 button#pdf-btn:hover {
-    background-color: #c82333;
+    background-color: var(--accent-primary);
+    color: var(--bg-dark-1);
 }
 
 button#pdf-btn:disabled {
-    background-color: #ccc;
+    background-color: var(--border-color);
+    color: #a0aec0;
+    border-color: var(--border-color);
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .output-box {
-    background-color: #f8f9fa;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    padding: 20px;
-    min-height: 200px;
-    white-space: pre-wrap; /* Preserve formatting */
+    background-color: var(--bg-dark-1);
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    min-height: 250px;
+    white-space: pre-wrap;
+    color: var(--text-light);
+    font-size: 1.05em;
 }
 
 /* Loading Spinner */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 #loading-spinner {
     text-align: center;
-    padding: 40px 0;
+    padding: 3rem 0;
 }
 
 .spinner {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #005A9C;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--accent-primary);
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 15px;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.2s linear infinite;
+    margin: 0 auto 1rem;
 }
 
 @keyframes spin {
@@ -161,32 +213,23 @@ button#pdf-btn:disabled {
 
 /* Error Message */
 #error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 15px;
+    background-color: rgba(245, 101, 101, 0.1);
+    color: var(--accent-error);
+    border: 1px solid var(--accent-error);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
 }
-
 
 /* Footer */
 footer {
     text-align: center;
-    margin-top: 40px;
-    color: #888;
+    margin-top: 3rem;
+    color: #a0aec0;
     font-size: 0.9em;
 }
 
 /* LTR direction styles */
 body.ltr {
     direction: ltr;
-}
-
-body.ltr header h1 {
-    font-size: 2em; /* Adjust if needed */
-}
-
-body.ltr .lang-switcher button {
-    margin: 0 5px; /* Adjust if needed */
 }
