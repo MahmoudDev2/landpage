@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMessage.classList.add('hidden');
     }
 
-    const API_KEY = 'AIzaSyDmRoHsrcAyQi5gC0QWrCXretd0Z-WbF5o';
+    const API_KEY = 'AIzaSyBufC5YiJgAe-nqBocjmcJQK11CG5Yn1Sg';
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
 
     // Function to generate the prompt for Gemini
