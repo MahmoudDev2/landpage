@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محسن السيرة الذاتية بالذكاء الاصطناعي</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1 data-lang-key="title">محسن السيرة الذاتية بالذكاء الاصطناعي</h1>
+        <div class="lang-switcher">
+            <button id="lang-ar" class="active">العربية</button>
+            <button id="lang-en">English</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="editor-container">
+                <h2 data-lang-key="input_header">أدخل نص سيرتك الذاتية هنا</h2>
+                <p data-lang-key="input_subheader">الصق سيرتك الذاتية الحالية أو اكتبها بلغة طبيعية. كلما زادت التفاصيل، كانت النتيجة أفضل.</p>
+                <textarea id="cv-input" placeholder="مثال: أنا مطور برامج لدي 5 سنوات من الخبرة في..." rows="15"></textarea>
+                <button id="improve-btn" data-lang-key="improve_button">✨ تحسين السيرة الذاتية</button>
+            </div>
+
+            <div class="result-container">
+                <div class="result-header">
+                    <h2 data-lang-key="output_header">النتيجة المحسنة</h2>
+                    <button id="pdf-btn" data-lang-key="download_pdf_button" disabled>📥 تحميل كـ PDF</button>
+                </div>
+                <div id="loading-spinner" class="hidden">
+                    <div class="spinner"></div>
+                    <p data-lang-key="loading_text">جاري التحليل والتحسين...</p>
+                </div>
+                <div id="error-message" class="hidden"></div>
+                <div id="cv-output" class="output-box">
+                    <!-- The improved CV will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p data-lang-key="footer_text">تم التطوير بواسطة الذكاء الاصطناعي</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="script.js"></script>
+</body>
+</html>
